@@ -1,0 +1,247 @@
+# Agent Registry Catalog
+# 階層的共通アーキテクチャ
+
+metadata:
+  name: "Agent Registry"
+  version: "1.0.0"
+  last_updated: "2026-02-07"
+  repository: "https://github.com/t2k2pp/agent-registry"
+
+# =============================================================================
+# Core（普遍原則）
+# =============================================================================
+core:
+  name: "Core Principles"
+  description: "プラットフォーム・言語に依存しない普遍的原則"
+  path: "core"
+  
+  skills:
+    - id: ai-development-guidelines
+      name: "AI開発ガイドライン"
+      path: "core/skills/ai-development-guidelines"
+      description: "AI駆動開発の禁止事項、よくある問題と対策（全FW共通）"
+      tags: [ai, guidelines, best-practices, must-read]
+      required: true
+      
+    - id: tech-stack-selector
+      name: "技術スタック選定"
+      path: "core/skills/tech-stack-selector"
+      description: "プラットフォーム×フレームワーク選定。ユーザー要望から最適な技術スタックを提案"
+      tags: [selection, platform, framework, architecture]
+      use_when: "フレームワークが明示されていない場合"
+      
+    - id: tdd-principles
+      name: "TDD原則"
+      path: "core/skills/tdd-principles"
+      description: "テスト駆動開発の普遍的原則"
+      tags: [tdd, testing, principles]
+      
+    - id: code-review-principles
+      name: "コードレビュー原則"
+      path: "core/skills/code-review-principles"
+      description: "コードレビューの普遍的原則"
+      tags: [review, quality, principles]
+      
+    - id: debugging-principles
+      name: "デバッグ原則"
+      path: "core/skills/debugging-principles"
+      description: "デバッグの普遍的原則"
+      tags: [debugging, troubleshooting, principles]
+
+# =============================================================================
+# Domains
+# =============================================================================
+domains:
+  # ---------------------------------------------------------------------------
+  # Mobile
+  # ---------------------------------------------------------------------------
+  mobile:
+    name: "Mobile Development"
+    description: "モバイルアプリ開発"
+    path: "domains/mobile"
+    
+    # Mobile Common（モバイル共通）
+    common:
+      name: "Mobile Common"
+      description: "モバイル開発共通（FW非依存）"
+      path: "domains/mobile/common"
+      
+      skills:
+        - id: mobile-ux
+          name: "モバイルUX"
+          path: "domains/mobile/common/skills/mobile-ux"
+          description: "モバイルUXの原則、タッチインタラクション、画面設計"
+          tags: [ux, mobile, design]
+          
+        - id: app-store-guidelines
+          name: "アプリストアガイドライン"
+          path: "domains/mobile/common/skills/app-store-guidelines"
+          description: "App Store/Google Playの審査対応、メタデータ、ポリシー"
+          tags: [appstore, googleplay, review, policy]
+          
+        - id: mobile-tdd
+          name: "モバイルTDD"
+          path: "domains/mobile/common/skills/mobile-tdd"
+          description: "モバイル向けTDD（UIテスト、インテグレーションテスト）"
+          tags: [tdd, testing, mobile]
+          dependencies: [tdd-principles]
+          
+      subagents:
+        - id: mobile-architect
+          name: "モバイルアーキテクト"
+          path: "domains/mobile/common/subagents/mobile-architect.md"
+          description: "モバイルアプリの設計・アーキテクチャ決定"
+          model: opus
+          
+        - id: uiux-designer
+          name: "UI/UXデザイナー"
+          path: "domains/mobile/common/subagents/uiux-designer.md"
+          description: "モバイルUI/UX設計"
+          model: sonnet
+    
+    # Flutter
+    flutter:
+      name: "Flutter"
+      description: "Flutter/Dartによるクロスプラットフォーム開発"
+      path: "domains/mobile/flutter"
+      
+      skills:
+        - id: flutter-development
+          name: "Flutter開発"
+          path: "domains/mobile/flutter/skills/flutter-development"
+          description: "Riverpod、GoRouter、UIコンポーネント実装"
+          tags: [flutter, dart, riverpod, gorouter]
+          dependencies: [ai-development-guidelines, mobile-ux]
+          
+        - id: flutter-environment-check
+          name: "Flutter環境診断"
+          path: "domains/mobile/flutter/skills/flutter-environment-check"
+          description: "Flutter Doctor、SDK/NDK、AGP互換性確認"
+          tags: [environment, setup, diagnostics]
+          
+        - id: flutter-tdd
+          name: "Flutter TDD"
+          path: "domains/mobile/flutter/skills/flutter-tdd"
+          description: "Flutter固有のTDD（Widget Test、Mockito）"
+          tags: [flutter, tdd, testing]
+          dependencies: [mobile-tdd]
+          
+      subagents:
+        - id: flutter-developer
+          name: "Flutter開発者"
+          path: "domains/mobile/flutter/subagents/flutter-developer.md"
+          description: "Flutter実装"
+          model: sonnet
+          
+    # Expo
+    expo:
+      name: "Expo"
+      description: "Expo (React Native)マネージドワークフロー"
+      path: "domains/mobile/expo"
+      
+      skills:
+        - id: expo-development
+          name: "Expo開発"
+          path: "domains/mobile/expo/skills/expo-development"
+          description: "Expo Router、Zustand、EAS Build/Update"
+          tags: [expo, react-native, zustand, eas]
+          dependencies: [ai-development-guidelines, mobile-ux]
+          
+        - id: expo-environment-check
+          name: "Expo環境診断"
+          path: "domains/mobile/expo/skills/expo-environment-check"
+          description: "Node.js、Expo CLI、EAS CLI確認"
+          tags: [environment, setup, expo]
+          
+      subagents:
+        - id: expo-developer
+          name: "Expo開発者"
+          path: "domains/mobile/expo/subagents/expo-developer.md"
+          description: "Expo実装"
+          model: sonnet
+          
+    # React Native CLI
+    react-native:
+      name: "React Native CLI"
+      description: "React Native CLIベアワークフロー"
+      path: "domains/mobile/react-native"
+      
+      skills:
+        - id: rn-development
+          name: "React Native開発"
+          path: "domains/mobile/react-native/skills/rn-development"
+          description: "ネイティブモジュール連携、React Navigation"
+          tags: [react-native, native-modules, navigation]
+          dependencies: [ai-development-guidelines, mobile-ux]
+          
+        - id: rn-environment-check
+          name: "React Native環境診断"
+          path: "domains/mobile/react-native/skills/rn-environment-check"
+          description: "Node.js、Xcode、Android Studio確認"
+          tags: [environment, setup, react-native]
+          
+      subagents:
+        - id: rn-developer
+          name: "React Native開発者"
+          path: "domains/mobile/react-native/subagents/rn-developer.md"
+          description: "React Native実装"
+          model: sonnet
+
+  # ---------------------------------------------------------------------------
+  # Web（将来拡張）
+  # ---------------------------------------------------------------------------
+  web:
+    name: "Web Development"
+    description: "Webアプリケーション開発（将来実装）"
+    path: "domains/web"
+    status: "planned"
+    
+  # ---------------------------------------------------------------------------
+  # Desktop（将来拡張）
+  # ---------------------------------------------------------------------------
+  desktop:
+    name: "Desktop Development"
+    description: "デスクトップアプリケーション開発（将来実装）"
+    path: "domains/desktop"
+    status: "planned"
+    
+  # ---------------------------------------------------------------------------
+  # Server（将来拡張）
+  # ---------------------------------------------------------------------------
+  server:
+    name: "Server Development"
+    description: "サーバーサイド開発（将来実装）"
+    path: "domains/server"
+    status: "planned"
+
+# =============================================================================
+# 推奨マッピング
+# =============================================================================
+recommendations:
+  # フレームワーク未指定時
+  - keywords: [モバイルアプリ, アプリ作成, アプリ開発, スマホアプリ]
+    condition: "フレームワーク明示なし"
+    suggest:
+      core: [tech-stack-selector]
+      note: "フレームワーク選定後に適切なスキルを取得"
+
+  # Flutter指定時
+  - keywords: [flutter, dart, クロスプラットフォーム]
+    suggest:
+      core: [ai-development-guidelines]
+      mobile-common: [mobile-ux, mobile-tdd]
+      flutter: [flutter-development, flutter-environment-check]
+
+  # Expo指定時
+  - keywords: [expo, expo router, eas]
+    suggest:
+      core: [ai-development-guidelines]
+      mobile-common: [mobile-ux]
+      expo: [expo-development, expo-environment-check]
+
+  # React Native CLI指定時
+  - keywords: [react native, react-native, rn]
+    suggest:
+      core: [ai-development-guidelines]
+      mobile-common: [mobile-ux]
+      react-native: [rn-development, rn-environment-check]
