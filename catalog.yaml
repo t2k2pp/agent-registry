@@ -1,9 +1,9 @@
 # Agent Registry Catalog
-# 階層的共通アーキテクチャ
+# 階層的共通アーキテクチャ - 完全版
 
 metadata:
   name: "Agent Registry"
-  version: "1.0.0"
+  version: "1.1.0"
   last_updated: "2026-02-07"
   repository: "https://github.com/t2k2pp/agent-registry"
 
@@ -26,8 +26,8 @@ core:
     - id: tech-stack-selector
       name: "技術スタック選定"
       path: "core/skills/tech-stack-selector"
-      description: "プラットフォーム×フレームワーク選定。ユーザー要望から最適な技術スタックを提案"
-      tags: [selection, platform, framework, architecture]
+      description: "プラットフォーム×フレームワーク選定"
+      tags: [selection, platform, framework]
       use_when: "フレームワークが明示されていない場合"
       
     - id: tdd-principles
@@ -52,15 +52,14 @@ core:
 # Domains
 # =============================================================================
 domains:
-  # ---------------------------------------------------------------------------
-  # Mobile
-  # ---------------------------------------------------------------------------
   mobile:
     name: "Mobile Development"
     description: "モバイルアプリ開発"
     path: "domains/mobile"
     
+    # -------------------------------------------------------------------------
     # Mobile Common（モバイル共通）
+    # -------------------------------------------------------------------------
     common:
       name: "Mobile Common"
       description: "モバイル開発共通（FW非依存）"
@@ -70,36 +69,74 @@ domains:
         - id: mobile-ux
           name: "モバイルUX"
           path: "domains/mobile/common/skills/mobile-ux"
-          description: "モバイルUXの原則、タッチインタラクション、画面設計"
+          description: "タッチインタラクション、画面設計"
           tags: [ux, mobile, design]
           
         - id: app-store-guidelines
           name: "アプリストアガイドライン"
           path: "domains/mobile/common/skills/app-store-guidelines"
-          description: "App Store/Google Playの審査対応、メタデータ、ポリシー"
-          tags: [appstore, googleplay, review, policy]
+          description: "App Store/Google Play審査対応"
+          tags: [appstore, googleplay, review]
           
         - id: mobile-tdd
           name: "モバイルTDD"
           path: "domains/mobile/common/skills/mobile-tdd"
-          description: "モバイル向けTDD（UIテスト、インテグレーションテスト）"
+          description: "モバイル向けTDD"
           tags: [tdd, testing, mobile]
           dependencies: [tdd-principles]
+          
+        - id: mobile-app-design
+          name: "モバイルアプリ設計"
+          path: "domains/mobile/common/skills/mobile-app-design"
+          description: "モバイルアプリの設計原則"
+          tags: [design, architecture, mobile]
+          
+        - id: mobile-app-uiux
+          name: "モバイルアプリUI/UX"
+          path: "domains/mobile/common/skills/mobile-app-uiux"
+          description: "モバイルアプリのUI/UX設計"
+          tags: [ui, ux, design]
           
       subagents:
         - id: mobile-architect
           name: "モバイルアーキテクト"
           path: "domains/mobile/common/subagents/mobile-architect.md"
-          description: "モバイルアプリの設計・アーキテクチャ決定"
+          description: "設計・アーキテクチャ決定"
           model: opus
           
         - id: uiux-designer
           name: "UI/UXデザイナー"
           path: "domains/mobile/common/subagents/uiux-designer.md"
-          description: "モバイルUI/UX設計"
+          description: "UI/UX設計"
+          model: sonnet
+          
+        - id: devops-engineer
+          name: "DevOpsエンジニア"
+          path: "domains/mobile/common/subagents/devops-engineer.md"
+          description: "CI/CD、リリース自動化"
+          model: sonnet
+          
+        - id: security-expert
+          name: "セキュリティエキスパート"
+          path: "domains/mobile/common/subagents/security-expert.md"
+          description: "セキュリティレビュー"
+          model: opus
+          
+        - id: localization-expert
+          name: "ローカライズエキスパート"
+          path: "domains/mobile/common/subagents/localization-expert.md"
+          description: "多言語対応"
+          model: sonnet
+          
+        - id: documentation-writer
+          name: "ドキュメントライター"
+          path: "domains/mobile/common/subagents/documentation-writer.md"
+          description: "ドキュメント作成"
           model: sonnet
     
+    # -------------------------------------------------------------------------
     # Flutter
+    # -------------------------------------------------------------------------
     flutter:
       name: "Flutter"
       description: "Flutter/Dartによるクロスプラットフォーム開発"
@@ -110,21 +147,83 @@ domains:
           name: "Flutter開発"
           path: "domains/mobile/flutter/skills/flutter-development"
           description: "Riverpod、GoRouter、UIコンポーネント実装"
-          tags: [flutter, dart, riverpod, gorouter]
+          tags: [flutter, dart, riverpod]
           dependencies: [ai-development-guidelines, mobile-ux]
           
         - id: flutter-environment-check
           name: "Flutter環境診断"
           path: "domains/mobile/flutter/skills/flutter-environment-check"
           description: "Flutter Doctor、SDK/NDK、AGP互換性確認"
-          tags: [environment, setup, diagnostics]
+          tags: [environment, setup]
           
         - id: flutter-tdd
           name: "Flutter TDD"
           path: "domains/mobile/flutter/skills/flutter-tdd"
-          description: "Flutter固有のTDD（Widget Test、Mockito）"
+          description: "Widget Test、Mockito"
           tags: [flutter, tdd, testing]
           dependencies: [mobile-tdd]
+          
+        - id: flutter-analytics
+          name: "Flutter アナリティクス"
+          path: "domains/mobile/flutter/skills/flutter-analytics"
+          description: "アナリティクス実装"
+          tags: [analytics, firebase]
+          
+        - id: flutter-ci-cd
+          name: "Flutter CI/CD"
+          path: "domains/mobile/flutter/skills/flutter-ci-cd"
+          description: "CI/CDパイプライン設計"
+          tags: [ci, cd, automation]
+          
+        - id: flutter-code-review
+          name: "Flutterコードレビュー"
+          path: "domains/mobile/flutter/skills/flutter-code-review"
+          description: "Flutter固有レビュー観点"
+          tags: [review, quality]
+          dependencies: [code-review-principles]
+          
+        - id: flutter-debugging
+          name: "Flutterデバッグ"
+          path: "domains/mobile/flutter/skills/flutter-debugging"
+          description: "DevTools、デバッグ手法"
+          tags: [debugging, devtools]
+          dependencies: [debugging-principles]
+          
+        - id: flutter-i18n
+          name: "Flutter国際化"
+          path: "domains/mobile/flutter/skills/flutter-i18n"
+          description: "多言語対応"
+          tags: [i18n, localization]
+          
+        - id: flutter-migration
+          name: "Flutterマイグレーション"
+          path: "domains/mobile/flutter/skills/flutter-migration"
+          description: "バージョンアップ対応"
+          tags: [migration, upgrade]
+          
+        - id: flutter-native-integration
+          name: "Flutterネイティブ連携"
+          path: "domains/mobile/flutter/skills/flutter-native-integration"
+          description: "MethodChannel、ネイティブプラグイン"
+          tags: [native, platform-channel]
+          
+        - id: flutter-performance
+          name: "Flutterパフォーマンス"
+          path: "domains/mobile/flutter/skills/flutter-performance"
+          description: "パフォーマンス最適化"
+          tags: [performance, optimization]
+          
+        - id: ios-platform-setup
+          name: "iOSプラットフォームセットアップ"
+          path: "domains/mobile/flutter/skills/ios-platform-setup"
+          description: "iOS/iPadOS固有設定、Xcode設定"
+          tags: [ios, xcode, setup]
+          
+        - id: ios-store-guidelines
+          name: "App Storeガイドライン"
+          path: "domains/mobile/flutter/skills/ios-store-guidelines"
+          description: "App Store審査対応"
+          tags: [appstore, ios, review]
           
       subagents:
         - id: flutter-developer
@@ -133,25 +232,77 @@ domains:
           description: "Flutter実装"
           model: sonnet
           
+        - id: flutter-debugger
+          name: "Flutterデバッガー"
+          path: "domains/mobile/flutter/subagents/flutter-debugger.md"
+          description: "デバッグ・問題解決"
+          model: sonnet
+          
+        - id: flutter-reviewer
+          name: "Flutterレビュアー"
+          path: "domains/mobile/flutter/subagents/flutter-reviewer.md"
+          description: "コードレビュー"
+          model: opus
+          
+        - id: flutter-tdd-runner
+          name: "Flutter TDDランナー"
+          path: "domains/mobile/flutter/subagents/flutter-tdd-runner.md"
+          description: "TDD実行"
+          model: sonnet
+          
+        - id: performance-specialist
+          name: "パフォーマンススペシャリスト"
+          path: "domains/mobile/flutter/subagents/performance-specialist.md"
+          description: "パフォーマンス最適化"
+          model: opus
+          
+      checklists:
+        - id: build-troubleshooting
+          path: "domains/mobile/flutter/checklists/build-troubleshooting.md"
+        - id: design-checklist
+          path: "domains/mobile/flutter/checklists/design-checklist.md"
+        - id: implementation-checklist
+          path: "domains/mobile/flutter/checklists/implementation-checklist.md"
+        - id: release-checklist
+          path: "domains/mobile/flutter/checklists/release-checklist.md"
+        - id: security-checklist
+          path: "domains/mobile/flutter/checklists/security-checklist.md"
+          
+      workflows:
+        - id: development-flow
+          path: "domains/mobile/flutter/workflows/development-flow.md"
+        - id: design-to-impl
+          path: "domains/mobile/flutter/workflows/design-to-impl.md"
+        - id: review-release
+          path: "domains/mobile/flutter/workflows/review-release.md"
+          
+    # -------------------------------------------------------------------------
     # Expo
+    # -------------------------------------------------------------------------
     expo:
       name: "Expo"
       description: "Expo (React Native)マネージドワークフロー"
       path: "domains/mobile/expo"
       
       skills:
+        - id: expo-guidelines
+          name: "Expoガイドライン"
+          path: "domains/mobile/expo/skills/expo-guidelines"
+          description: "AI開発ガイドライン（Expo版）"
+          tags: [expo, guidelines]
+          
         - id: expo-development
           name: "Expo開発"
           path: "domains/mobile/expo/skills/expo-development"
-          description: "Expo Router、Zustand、EAS Build/Update"
-          tags: [expo, react-native, zustand, eas]
+          description: "Expo Router、Zustand、EAS"
+          tags: [expo, react-native, zustand]
           dependencies: [ai-development-guidelines, mobile-ux]
           
         - id: expo-environment-check
           name: "Expo環境診断"
           path: "domains/mobile/expo/skills/expo-environment-check"
           description: "Node.js、Expo CLI、EAS CLI確認"
-          tags: [environment, setup, expo]
+          tags: [environment, setup]
           
       subagents:
         - id: expo-developer
@@ -160,25 +311,33 @@ domains:
           description: "Expo実装"
           model: sonnet
           
+    # -------------------------------------------------------------------------
     # React Native CLI
+    # -------------------------------------------------------------------------
     react-native:
       name: "React Native CLI"
       description: "React Native CLIベアワークフロー"
       path: "domains/mobile/react-native"
       
       skills:
+        - id: rn-guidelines
+          name: "React Nativeガイドライン"
+          path: "domains/mobile/react-native/skills/rn-guidelines"
+          description: "AI開発ガイドライン（RN版）"
+          tags: [react-native, guidelines]
+          
         - id: rn-development
           name: "React Native開発"
           path: "domains/mobile/react-native/skills/rn-development"
           description: "ネイティブモジュール連携、React Navigation"
-          tags: [react-native, native-modules, navigation]
+          tags: [react-native, native-modules]
           dependencies: [ai-development-guidelines, mobile-ux]
           
         - id: rn-environment-check
           name: "React Native環境診断"
           path: "domains/mobile/react-native/skills/rn-environment-check"
           description: "Node.js、Xcode、Android Studio確認"
-          tags: [environment, setup, react-native]
+          tags: [environment, setup]
           
       subagents:
         - id: rn-developer
@@ -218,30 +377,44 @@ domains:
 # 推奨マッピング
 # =============================================================================
 recommendations:
-  # フレームワーク未指定時
-  - keywords: [モバイルアプリ, アプリ作成, アプリ開発, スマホアプリ]
+  - keywords: [モバイルアプリ, アプリ作成, アプリ開発]
     condition: "フレームワーク明示なし"
     suggest:
       core: [tech-stack-selector]
-      note: "フレームワーク選定後に適切なスキルを取得"
 
-  # Flutter指定時
-  - keywords: [flutter, dart, クロスプラットフォーム]
+  - keywords: [flutter, dart]
     suggest:
       core: [ai-development-guidelines]
-      mobile-common: [mobile-ux, mobile-tdd]
+      mobile-common: [mobile-ux, mobile-tdd, mobile-app-design]
       flutter: [flutter-development, flutter-environment-check]
 
-  # Expo指定時
-  - keywords: [expo, expo router, eas]
+  - keywords: [expo, eas]
     suggest:
       core: [ai-development-guidelines]
       mobile-common: [mobile-ux]
-      expo: [expo-development, expo-environment-check]
+      expo: [expo-guidelines, expo-development, expo-environment-check]
 
-  # React Native CLI指定時
   - keywords: [react native, react-native, rn]
     suggest:
       core: [ai-development-guidelines]
       mobile-common: [mobile-ux]
-      react-native: [rn-development, rn-environment-check]
+      react-native: [rn-guidelines, rn-development, rn-environment-check]
+      
+  - keywords: [ios, iphone, ipad, ipados]
+    suggest:
+      flutter: [ios-platform-setup, ios-store-guidelines]
+      
+  - keywords: [ci, cd, 自動化, デプロイ]
+    suggest:
+      flutter: [flutter-ci-cd]
+      subagents: [devops-engineer]
+      
+  - keywords: [パフォーマンス, 最適化]
+    suggest:
+      flutter: [flutter-performance]
+      subagents: [performance-specialist]
+      
+  - keywords: [多言語, i18n, 国際化]
+    suggest:
+      flutter: [flutter-i18n]
+      subagents: [localization-expert]
